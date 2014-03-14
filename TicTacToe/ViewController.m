@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 @interface ViewController () <UIGestureRecognizerDelegate>
+
 {
     IBOutlet UILabel *myLabelOne;
     IBOutlet UILabel *myLabelTwo;
@@ -23,7 +24,18 @@
     CGPoint findLabelTapped;
     bool whichPlayer;
     NSMutableArray *labels;
+    NSMutableArray *playerOneLabels;
+    NSMutableArray *playerTwoLabels;
+    NSMutableArray *winCombination1;
+    NSMutableArray *winCombination2;
+    NSMutableArray *winCombination3;
+    NSMutableArray *winCombination4;
+    NSMutableArray *winCombination5;
+    NSMutableArray *winCombination6;
+    NSMutableArray *winCombination7;
+    NSMutableArray *winCombination8;
 }
+@property NSMutableArray *winCombos;
 
 @end
 
@@ -31,7 +43,19 @@
 
 - (void)viewDidLoad
 {
+    winCombination1 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelTwo, myLabelThree, nil];
+    winCombination2 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelFour, myLabelSeven, nil];
+    winCombination3 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelFive, myLabelNine, nil];
+    winCombination4 = [[NSMutableArray alloc] initWithObjects:myLabelTwo, myLabelFive, myLabelEight, nil];
+    winCombination5 = [[NSMutableArray alloc] initWithObjects:myLabelThree, myLabelSix, myLabelNine, nil];
+    winCombination6 = [[NSMutableArray alloc] initWithObjects:myLabelThree, myLabelFive, myLabelSeven, nil];
+    winCombination7 = [[NSMutableArray alloc] initWithObjects:myLabelFour, myLabelFive, myLabelSix, nil];
+    winCombination8 = [[NSMutableArray alloc] initWithObjects:myLabelSeven, myLabelEight, myLabelNine, nil];
+    _winCombos = [[NSMutableArray alloc] initWithObjects:winCombination8, winCombination7, winCombination6, winCombination5, winCombination4, winCombination3, winCombination2, winCombination1, nil];
+    
     labels =[[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelTwo, myLabelThree, myLabelFour, myLabelFive, myLabelSix, myLabelSeven, myLabelEight, myLabelNine, nil];
+    playerOneLabels = [[NSMutableArray alloc] initWithObjects: nil];
+    playerTwoLabels = [[NSMutableArray alloc] initWithObjects: nil];
     whichPlayerLabel.text = @"Player 1";
     whichPlayerLabel.backgroundColor = [UIColor redColor];
     [whichPlayerLabel sizeToFit];
@@ -63,16 +87,29 @@
             removeLabel = foundLabel;
         }
     }
-    [labels removeObject:removeLabel];
-    whichPlayer = !whichPlayer;
     if (whichPlayer) {
         whichPlayerLabel.text = @"Player2";
         whichPlayerLabel.backgroundColor = [UIColor blueColor];
+        [playerOneLabels addObject:removeLabel];
+        [labels removeObject:removeLabel];
+        
     }
     else{
         whichPlayerLabel.text = @"Player1";
         whichPlayerLabel.backgroundColor = [UIColor redColor];
+        [playerTwoLabels addObject:removeLabel];
+        [labels removeObject:removeLabel];
     }
+    //NSLog(@"%@", _winCombos);
+    NSLog(@"%@", playerOneLabels);
+    //SLog(@"%@", playerTwoLabels);
+   // NSLog(@"%@", labels);
+    for (NSMutableArray* didWin in _winCombos) {
+        if([didWin containsObject:playerOneLabels]){
+            NSLog(@"WIN");
+        }
+    }
+    whichPlayer = !whichPlayer;
     
 }
 
