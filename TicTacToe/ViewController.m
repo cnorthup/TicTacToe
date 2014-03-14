@@ -34,8 +34,10 @@
     NSMutableArray *winCombination6;
     NSMutableArray *winCombination7;
     NSMutableArray *winCombination8;
+    int gameIndex;
 }
 @property NSMutableArray *winCombos;
+
 
 @end
 
@@ -43,6 +45,7 @@
 
 - (void)viewDidLoad
 {
+    gameIndex = 0;
     winCombination1 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelTwo, myLabelThree, nil];
     winCombination2 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelFour, myLabelSeven, nil];
     winCombination3 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelFive, myLabelNine, nil];
@@ -100,19 +103,41 @@
         [playerTwoLabels addObject:removeLabel];
         [labels removeObject:removeLabel];
     }
+    [self forLoop];
     //NSLog(@"%@", _winCombos);
-    NSLog(@"%@", playerOneLabels);
+    //NSLog(@"%@", playerOneLabels);
     //SLog(@"%@", playerTwoLabels);
    // NSLog(@"%@", labels);
-    for (NSMutableArray* didWin in _winCombos) {
-        if([didWin containsObject:playerOneLabels]){
-            NSLog(@"WIN");
-        }
-    }
+    
     whichPlayer = !whichPlayer;
     
 }
 
+-(void)checkIndex:(int)index
+{
+    if (index != 3) {
+        gameIndex = 0;
+    }
+}
+
+
+- (void)forLoop
+{
+    for (NSMutableArray* arrayTwo in _winCombos) {
+        for (UILabel* label in arrayTwo) {
+            if ([playerOneLabels containsObject:label]) {
+                gameIndex++;
+            }
+            if ([playerTwoLabels containsObject:label]) {
+                gameIndex++;
+            }
+        }
+        [self checkIndex:gameIndex];
+         NSLog(@"%d",gameIndex);
+        //if([playerOneLabels containsObject:didWin]){
+        // NSLog(@"WIN");
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {
