@@ -35,6 +35,10 @@
     NSMutableArray *winCombination7;
     NSMutableArray *winCombination8;
     int gameIndex;
+    UILabel *removeLabel;
+
+    CGPoint originPointOfPlayerLabelToBeDragged;
+    IBOutlet UILabel *labelToBeDraggedByCurrentPlayer;
 }
 @property NSMutableArray *winCombos;
 
@@ -45,6 +49,7 @@
 
 - (void)viewDidLoad
 {
+    originPointOfPlayerLabelToBeDragged = labelToBeDraggedByCurrentPlayer.center;
     gameIndex = 0;
     winCombination1 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelTwo, myLabelThree, nil];
     winCombination2 = [[NSMutableArray alloc] initWithObjects:myLabelOne, myLabelFour, myLabelSeven, nil];
@@ -78,12 +83,8 @@
     }
 }
 
-
-
-- (IBAction)onLabelTapped:(UITapGestureRecognizer *)tapGestureRecongizer
+- (void)detectWhichLabel
 {
-    UILabel *removeLabel;
-    findLabelTapped = [tapGestureRecongizer locationInView:self.view];
     for (UILabel* foundLabel in labels) {
         if (CGRectContainsPoint(foundLabel.frame, findLabelTapped)) {
             [self writeLabel:foundLabel];
@@ -105,7 +106,37 @@
     }
     [self forLoop];
     whichPlayer = !whichPlayer;
+}
+
+
+- (IBAction)onDrag:(UIPanGestureRecognizer *)panGesutreRecongizer{
     
+    CGPoint dragCenterOfLabel = [panGesutreRecongizer translationInView:self.view];
+    labelToBeDraggedByCurrentPlayer.transform = CGAffineTransformMakeTranslation(dragCenterOfLabel.x, dragCenterOfLabel.y);
+    dragCenterOfLabel.y += labelToBeDraggedByCurrentPlayer.center.y;
+    dragCenterOfLabel.x += labelToBeDraggedByCurrentPlayer.center.x;
+    
+//        if (panGesutreRecongizer.state == UIGestureRecognizerStateBegan && CGRectContainsPoint(labelToBeDraggedByCurrentPlayer.frame, dragCenterOfLabel)) {
+            if (panGesutreRecongizer.state == UIGestureRecognizerStateEnded) {
+                findLabelTapped = [panGesutreRecongizer locationInView:self.view];
+                [self detectWhichLabel];
+                labelToBeDraggedByCurrentPlayer.transform = CGAffineTransformMakeTranslation(0, 0);
+                [panGesutreRecongizer setTranslation:CGPointMake(0, 0) inView:self.view];
+                if (whichPlayer != YES) {
+                    labelToBeDraggedByCurrentPlayer.text = @"X";
+                    labelToBeDraggedByCurrentPlayer.backgroundColor = [UIColor blueColor];
+                }else {
+                labelToBeDraggedByCurrentPlayer.text = @"O";
+                labelToBeDraggedByCurrentPlayer.backgroundColor = [UIColor redColor];
+                }
+            }
+}
+
+
+- (IBAction)onLabelTapped:(UITapGestureRecognizer *)tapGestureRecongizer
+{
+    findLabelTapped = [tapGestureRecongizer locationInView:self.view];
+    [self detectWhichLabel];
 }
 
 -(void)whoWon{
@@ -141,7 +172,6 @@
     }
     if (gameIndex == 3) {
         [self whoWon];
-        NSLog(@"win");
     }
 }
 

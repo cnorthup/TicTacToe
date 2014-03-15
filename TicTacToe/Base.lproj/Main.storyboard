@@ -97,14 +97,24 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="O" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="k96-p5-3Z0" userLabel="Label - Drag">
+                                <rect key="frame" x="115" y="458" width="90" height="90"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.88454639670000001" green="0.0" blue="0.0095982185559999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="80"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="SfV-PP-rn9" appends="YES" id="wAH-ym-MiU"/>
+                            <outletCollection property="gestureRecognizers" destination="j9V-IK-AUZ" appends="YES" id="3kv-hI-Ymn"/>
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="labelToBeDraggedByCurrentPlayer" destination="k96-p5-3Z0" id="hJx-3o-tOv"/>
                         <outlet property="myLabelEight" destination="EgZ-Ip-yyf" id="JHH-Ng-wJQ"/>
                         <outlet property="myLabelFive" destination="8II-Ii-4Fb" id="nIk-NV-VbJ"/>
                         <outlet property="myLabelFour" destination="mLX-6C-6dB" id="L4m-vu-rdk"/>
@@ -123,6 +133,11 @@
                         <action selector="onLabelTapped:" destination="vXZ-lx-hvc" id="djf-5K-w8y"/>
                     </connections>
                 </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="j9V-IK-AUZ">
+                    <connections>
+                        <action selector="onDrag:" destination="vXZ-lx-hvc" id="unP-SR-zZU"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
         </scene>
     </scenes>
