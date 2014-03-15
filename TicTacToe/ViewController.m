@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <UIGestureRecognizerDelegate>
+@interface ViewController () <UIGestureRecognizerDelegate, UIAlertViewDelegate>
 
 {
     IBOutlet UILabel *myLabelOne;
@@ -104,13 +104,33 @@
         [labels removeObject:removeLabel];
     }
     [self forLoop];
-    //NSLog(@"%@", _winCombos);
-    //NSLog(@"%@", playerOneLabels);
-    //SLog(@"%@", playerTwoLabels);
-   // NSLog(@"%@", labels);
-    
     whichPlayer = !whichPlayer;
     
+}
+
+-(void)whoWon{
+    NSString *winnerP;
+    NSString *youSuck;
+    if (whichPlayer) {
+        winnerP = @"Player 1 WON";
+        youSuck = @"Player 2 SUCKS";
+    }
+    else{
+        winnerP = @"Player 2 WON";
+        youSuck = @"Player 1 SUCKS";
+    }
+    UIAlertView *gameWon = [[UIAlertView alloc] initWithTitle:winnerP message:youSuck delegate:self cancelButtonTitle:@"Quit" otherButtonTitles:@"Replay", nil];
+    [gameWon show];
+    
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0) {
+        NSLog(@"quit");
+    }
+    if (buttonIndex == 1) {
+        [self viewDidLoad];
+    }
 }
 
 -(void)checkIndex:(int)index
@@ -118,25 +138,40 @@
     if (index != 3) {
         gameIndex = 0;
     }
+    if (gameIndex == 3) {
+        [self whoWon];
+        NSLog(@"win");
+    }
 }
 
 
 - (void)forLoop
 {
-    for (NSMutableArray* arrayTwo in _winCombos) {
-        for (UILabel* label in arrayTwo) {
-            if ([playerOneLabels containsObject:label]) {
-                gameIndex++;
+    if (whichPlayer) {
+        for (NSMutableArray* arrayTwo in _winCombos) {
+            for (UILabel* label in arrayTwo) {
+                if ([playerOneLabels containsObject:label]) {
+                    gameIndex++;
+                }
+            
             }
-            if ([playerTwoLabels containsObject:label]) {
-                gameIndex++;
+            [self checkIndex:gameIndex];
+            NSLog(@"player 1, %d",gameIndex);
+            //if([playerOneLabels containsObject:didWin]){
+            // NSLog(@"WIN");
+        }
+    }
+        else{
+            for (NSMutableArray* arrayTwo in _winCombos) {
+                for (UILabel* label in arrayTwo) {
+                    if ([playerTwoLabels containsObject:label]) {
+                        gameIndex++;
+                    }
+                }
+                [self checkIndex:gameIndex];
+                NSLog(@"player 2, %d",gameIndex);
             }
         }
-        [self checkIndex:gameIndex];
-         NSLog(@"%d",gameIndex);
-        //if([playerOneLabels containsObject:didWin]){
-        // NSLog(@"WIN");
-    }
 }
 
 - (void)didReceiveMemoryWarning
