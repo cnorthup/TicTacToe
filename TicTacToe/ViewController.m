@@ -125,11 +125,12 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 0) {
-        NSLog(@"quit");
-    }
-    if (buttonIndex == 1) {
+    if (buttonIndex == 1 || buttonIndex == 0) {
         [self viewDidLoad];
+        for (UILabel *resetColorAndText in labels) {
+            resetColorAndText.text = nil;
+            resetColorAndText.backgroundColor = [UIColor whiteColor];
+        }
     }
 }
 
